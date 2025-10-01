@@ -13,15 +13,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let windowscene = (scene as? UIWindowScene) else { return }
-        window = UIWindow(windowScene: windowscene)
+        guard let windowScene = (scene as? UIWindowScene) else { return }
         
-        let rootViewController: UIViewController = StartingViewController()
-        let navigationController = UINavigationController(rootViewController: rootViewController)
-        window?.rootViewController = navigationController
+        window = UIWindow(windowScene: windowScene)
+        
+        // Configurar o root view controller como CustomTabBarController
+        let rootViewController = CustomTabBarController()
+        window?.rootViewController = rootViewController
         window?.makeKeyAndVisible()
     }
 
@@ -55,7 +53,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Save changes in the application's managed object context when the application transitions to the background.
         (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
     }
-
-
 }
-
