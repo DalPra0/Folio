@@ -9,25 +9,39 @@ import Foundation
 import UIKit
 
 class HomeViewController: UIViewController {
-    
-    private let testLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Ola estante funcionando"
-        label.textAlignment = .center
-        label.font = .systemFont(ofSize: 24, weight: .bold)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
+    private lazy var collectionView: UICollectionView = {
+        let layout = createLayout()
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.translatesAutoresizingMaskIntoConstraints = false
+        cv.backgroundColor = .systemBackground
+        return cv
     }()
     
     override func viewDidLoad() {
-        title = "Minha estante"
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        view.addSubview(testLabel)
+        title = "Minha estante"
+
+    }
+    
+    private func createLayout() -> UICollectionViewLayout {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(0.5),
+            heightDimension: .fractionalHeight(1.0)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
         
-        NSLayoutConstraint.activate([
-            testLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            testLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        ])
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(200)
+        )
+        
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+            section.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 8, bottom: 16, trailing: 8)
+            
+            return UICollectionViewCompositionalLayout(section: section)
+
     }
 }

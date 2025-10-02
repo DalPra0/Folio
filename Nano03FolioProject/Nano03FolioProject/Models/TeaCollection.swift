@@ -23,6 +23,16 @@ struct TeaCollection: Identifiable, Codable {
     ){
         self.id = id
         self.name = name
-        self.box
+        self.boxColor = max(1, min(4, boxColor))
+        self.dateCreated = dateCreated
+        self.teas = teas
+    }
+    
+    var boxAssetName: String {
+        return "box\(boxColor)"
+    }
+    
+    var teaCount: Int {
+        return teas.count
     }
 }
