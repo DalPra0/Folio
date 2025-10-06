@@ -33,6 +33,6 @@ struct TeaCollection: Identifiable, Codable {
     }
     
     var teaCount: Int {
-        return teas.count
+        return setupFakeTeas(teas).count
     }
 }

@@ -11,6 +11,7 @@ import UIKit
 class HomeViewController: UIViewController {
     
     private var collections: [TeaCollection] = []
+    private let fab = FloatingActionButton()
     
     private lazy var collectionView: UICollectionView = {
         let layout = createLayout()
@@ -39,6 +40,9 @@ class HomeViewController: UIViewController {
         collectionView.delegate = self
         
         collectionView.register(CollectionCell.self, forCellWithReuseIdentifier: CollectionCell.identifier)
+        fab.addToView(view)
+
+        fab.addTarget(self, action: #selector(fabTapped), for: .touchUpInside)
         
     }
     
@@ -73,6 +77,12 @@ class HomeViewController: UIViewController {
             TeaCollection(name: "Inverno", boxColor: 2)
         ]
     }
+    
+    @objc private func fabTapped() {
+        print("FAB tocado!")
+        
+        // TODO: Mostrar menu de opções (Adicionar Coleção / Adicionar Chá)
+    }
 }
 
 extension HomeViewController: UICollectionViewDataSource {
@@ -102,7 +112,8 @@ extension HomeViewController: UICollectionViewDelegate {
         let collection = collections[indexPath.item]
         
         print("Tocou na coleção: \(collection.name)")
-        
+        let teaShelfVC = TeaShelfViewController(collection: collection)
+        navigationController?.pushViewController(teaShelfVC, animated: true)
         // TODO: Navegar para a tela dos chás
     }
 }
