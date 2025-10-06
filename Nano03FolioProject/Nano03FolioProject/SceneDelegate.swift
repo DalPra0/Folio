@@ -19,7 +19,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         // Configurar o root view controller como CustomTabBarController
         let rootViewController = HomeViewController()
-        window?.rootViewController = rootViewController
+        let navigationController = UINavigationController(rootViewController: rootViewController)
+        window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
 

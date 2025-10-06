@@ -9,6 +9,9 @@ import Foundation
 import UIKit
 
 class HomeViewController: UIViewController {
+    
+    private var collections: [TeaCollection] = []
+    
     private lazy var collectionView: UICollectionView = {
         let layout = createLayout()
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -21,7 +24,22 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         title = "Minha estante"
-
+        view.addSubview(collectionView)
+        
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ])
+        
+        setupFakeData()
+        
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        
+        collectionView.register(CollectionCell.self, forCellWithReuseIdentifier: CollectionCell.identifier)
+        
     }
     
     private func createLayout() -> UICollectionViewLayout {
@@ -39,9 +57,52 @@ class HomeViewController: UIViewController {
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
         let section = NSCollectionLayoutSection(group: group)
-            section.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 8, bottom: 16, trailing: 8)
-            
-            return UICollectionViewCompositionalLayout(section: section)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 8, bottom: 16, trailing: 8)
+        
+        return UICollectionViewCompositionalLayout(section: section)
+        
+    }
+    
+    private func setupFakeData() {
+        collections = [
+            TeaCollection(name: "Chás da Manhã", boxColor: 1),
+            TeaCollection(name: "Chás Relaxantes", boxColor: 2),
+            TeaCollection(name: "Chás Verdes", boxColor: 3),
+            TeaCollection(name: "Chás Especiais", boxColor: 4),
+            TeaCollection(name: "Favoritos", boxColor: 1),
+            TeaCollection(name: "Inverno", boxColor: 2)
+        ]
+    }
+}
 
+extension HomeViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return collections.count
+    }
+    
+        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: CollectionCell.identifier,
+            for: indexPath
+        ) as? CollectionCell else {
+            return UICollectionViewCell()
+        }
+        
+        let collection = collections[indexPath.item]
+        
+        cell.configure(with: collection)
+        
+        return cell
+    }
+}
+
+extension HomeViewController: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let collection = collections[indexPath.item]
+        
+        print("Tocou na coleção: \(collection.name)")
+        
+        // TODO: Navegar para a tela dos chás
     }
 }
