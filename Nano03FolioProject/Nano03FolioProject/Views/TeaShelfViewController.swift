@@ -133,7 +133,7 @@ extension TeaShelfViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let tea = teas[indexPath.item]
         print("Tocou no chá: \(tea.name)")
-        print("Tipo do chá: \(tea.type)")
+        print("Tipo do chá: \(tea.type.displayName)")
         
         // TODO: Navegar para a tela de detalhes do chá
     }
